@@ -264,6 +264,7 @@ module bp_uce
   wire is_writeback_wb    = (state_r == e_writeback_write_req); // send dirty data from UCE to L2
   wire is_write_request   = (state_r == e_write_wait);
   wire is_read_request    = (state_r == e_read_req);
+  wire is_uc_read_wait    = (state_r == e_uc_read_wait);
 
   // We check for uncached stores ealier than other requests, because they get sent out in ready
   wire flush_v_li         = cache_req_v_i & cache_req_cast_i.msg_type inside {e_cache_flush};
@@ -440,7 +441,7 @@ module bp_uce
   // We ack mem_resps for uncached stores no matter what, so mem_resp_yumi_lo is for other responses
   logic mem_resp_yumi_lo;
   assign mem_resp_yumi_o = mem_resp_yumi_lo | store_resp_v_li;
-  assign cache_req_busy_o = is_reset | is_clear | cache_req_credits_full_o;
+  assign cache_req_busy_o = is_reset | is_clear | is_uc_read_wait | cache_req_credits_full_o;
   always_comb
     begin
       cache_req_yumi_o = '0;
@@ -728,6 +729,7 @@ module bp_uce
           end
         e_uc_read_wait:
           begin
+            // TODO: Should be dynamic, not always dword sized
             data_mem_pkt_cast_o.opcode = e_cache_data_mem_uncached;
             data_mem_pkt_cast_o.data = {(fill_width_p/dword_width_gp){mem_resp_cast_i.data[0+:dword_width_gp]}};
             data_mem_pkt_v_o = load_resp_v_li;

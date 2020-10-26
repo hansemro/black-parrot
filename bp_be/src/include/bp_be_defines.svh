@@ -103,10 +103,11 @@
     {                                                                                              \
       logic                           v;                                                           \
       logic                           queue_v;                                                     \
+      logic                           redirect_v;                                                  \
       logic                           instret;                                                     \
       logic [vaddr_width_p-1:0]       pc;                                                          \
       logic [vaddr_width_p-1:0]       npc;                                                         \
-      logic [instr_width_gp-1:0]      instr;                                                       \
+      rv64_instr_s                    instr;                                                       \
       logic [rv64_priv_width_gp-1:0]  priv_n;                                                      \
       logic                           translation_en_n;                                            \
       logic                           exception;                                                   \
@@ -116,6 +117,7 @@
       logic                           sfence;                                                      \
       logic                           satp;                                                        \
       logic                           icache_miss;                                                 \
+      logic                           dcache_miss;                                                 \
       logic                           rollback;                                                    \
     }  bp_be_commit_pkt_s;                                                                         \
                                                                                                    \
@@ -186,7 +188,7 @@
     (3 + vaddr_width_mp)
 
   `define bp_be_commit_pkt_width(vaddr_width_mp) \
-    (3 + 2 * vaddr_width_mp + instr_width_gp + rv64_priv_width_gp + 9)
+    (4 + 2 * vaddr_width_mp + instr_width_gp + rv64_priv_width_gp + 10)
 
   `define bp_be_wb_pkt_width(vaddr_width_mp) \
     (3                                                                                             \
