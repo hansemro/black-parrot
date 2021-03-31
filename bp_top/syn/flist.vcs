@@ -184,7 +184,6 @@ $BP_COMMON_DIR/src/v/bsg_parallel_in_serial_out_passthrough_dynamic.v
 $BP_COMMON_DIR/src/v/bsg_wormhole_stream_control.v
 $BP_COMMON_DIR/src/v/bsg_wormhole_stream_in.v
 $BP_COMMON_DIR/src/v/bsg_wormhole_stream_out.v
-$BP_COMMON_DIR/src/v/bsg_mem_1r1w_sync_mask_write_bit_reshape.v
 $BP_COMMON_DIR/src/v/bp_mmu.sv
 $BP_COMMON_DIR/src/v/bp_pma.sv
 $BP_COMMON_DIR/src/v/bp_tlb.sv
