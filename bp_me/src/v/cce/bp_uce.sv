@@ -79,7 +79,11 @@ module bp_uce
 
     , output [uce_mem_msg_width_lp-1:0]              mem_cmd_o
     , output logic                                   mem_cmd_v_o
+<<<<<<< HEAD
     , input                                          mem_cmd_yumi_i
+=======
+    , input                                          mem_cmd_ready_then_i
+>>>>>>> f6959e79... cce burst single commit
 
     , input [uce_mem_msg_width_lp-1:0]               mem_resp_i
     , input                                          mem_resp_v_i
@@ -401,7 +405,11 @@ module bp_uce
   //
   logic [`BSG_WIDTH(coh_noc_max_credits_p)-1:0] credit_count_lo;
   wire credit_v_li = mem_cmd_v_o;
+<<<<<<< HEAD
   wire credit_ready_li = mem_cmd_yumi_i;
+=======
+  wire credit_ready_li = mem_cmd_ready_then_i;
+>>>>>>> f6959e79... cce burst single commit
   // credit is returned when request completes
   // UC store done for UC Store, UC Data for UC Load, Set Tag Wakeup for
   // a miss that is actually an upgrade, and data and tag for normal requests.
@@ -573,8 +581,13 @@ module bp_uce
             mem_cmd_cast_payload.lce_id    = lce_id_i;
             mem_cmd_cast_o.header.payload = mem_cmd_cast_payload;
             mem_cmd_cast_o.data                  = writeback_data;
+<<<<<<< HEAD
             mem_cmd_v_o = dirty_data_v_r & dirty_tag_v_r & ~cache_req_credits_full_o;
             mem_cmd_up = mem_cmd_yumi_i;
+=======
+            mem_cmd_v_o = mem_cmd_ready_then_i & dirty_data_v_r & dirty_tag_v_r;
+            mem_cmd_up = mem_cmd_v_o;
+>>>>>>> f6959e79... cce burst single commit
 
             way_up = mem_cmd_done & mem_cmd_up;
             index_up = way_done & way_up;
@@ -595,7 +608,7 @@ module bp_uce
           end
         e_ready:
           begin
-            if ((uc_store_v_li && (~uc_hit_v_li || (l1_writethrough_p == 1))) || wt_store_v_li)
+            if (((uc_store_v_li || uc_amo_v_li) && (~uc_hit_v_li || (l1_writethrough_p == 1))) || wt_store_v_li)
               begin
                 mem_cmd_cast_o.header.msg_type       = e_bedrock_mem_uc_wr;
                 mem_cmd_cast_o.header.addr           = cache_req_cast_i.addr;
@@ -669,9 +682,15 @@ module bp_uce
               mem_cmd_cast_payload.way_id          = lce_assoc_p'(cache_req_metadata_r.hit_or_repl_way);
               mem_cmd_cast_payload.lce_id          = lce_id_i;
               mem_cmd_cast_o.header.payload = mem_cmd_cast_payload;
+<<<<<<< HEAD
               mem_cmd_v_o = cache_req_metadata_v_r & ~cache_req_credits_full_o;
               mem_cmd_up = mem_cmd_yumi_i;
               state_n = mem_cmd_up
+=======
+              mem_cmd_v_o = mem_cmd_ready_then_i & cache_req_metadata_v_r;
+              mem_cmd_up = mem_cmd_v_o;
+              state_n = mem_cmd_v_o
+>>>>>>> f6959e79... cce burst single commit
                         ? cache_req_metadata_r.dirty
                           ? e_writeback_evict
                           : e_read_req
@@ -682,11 +701,16 @@ module bp_uce
               mem_cmd_cast_o.header.msg_type       = uc_load_v_r ? e_bedrock_mem_uc_rd : uc_amo_v_r ? e_bedrock_mem_amo : e_bedrock_mem_uc_wr;
               mem_cmd_cast_o.header.addr           = cache_req_r.addr;
               mem_cmd_cast_o.header.size           = bp_bedrock_msg_size_e'(cache_req_r.size);
+              mem_cmd_cast_o.header.subop          = mem_wr_subop;
               mem_cmd_cast_payload.lce_id          = lce_id_i;
               mem_cmd_cast_o.header.payload        = mem_cmd_cast_payload;
+<<<<<<< HEAD
               mem_cmd_cast_o.header.subop          = mem_wr_subop;
               mem_cmd_cast_o.data                  = cache_req_r.data;
               mem_cmd_v_o                          = ~cache_req_credits_full_o;
+=======
+              mem_cmd_v_o                          = mem_cmd_ready_then_i;
+>>>>>>> f6959e79... cce burst single commit
 
               state_n = mem_cmd_yumi_i ? uc_store_v_r ? e_ready: e_uc_read_wait : e_send_critical;
             end
@@ -732,6 +756,7 @@ module bp_uce
             fill_up = tag_mem_pkt_yumi_i & data_mem_pkt_yumi_i;
             mem_resp_yumi_lo = tag_mem_pkt_yumi_i & data_mem_pkt_yumi_i;
             // request next sub-block
+<<<<<<< HEAD
             mem_cmd_cast_o.header.msg_type = e_bedrock_mem_rd;
             mem_cmd_cast_o.header.addr     = {cache_req_r.addr[paddr_width_p-1:block_offset_width_lp], {assoc_p > 1{bank_index}}, byte_offset_width_lp'(0)};
             mem_cmd_cast_o.header.size     = block_msg_size_lp;
@@ -740,6 +765,16 @@ module bp_uce
             mem_cmd_cast_o.header.payload  = mem_cmd_cast_payload;
             mem_cmd_v_o = ~mem_cmd_done_r & ~cache_req_credits_full_o;
             mem_cmd_up = mem_cmd_yumi_i;
+=======
+            mem_cmd_cast_o.header.msg_type       = e_bedrock_mem_rd;
+            mem_cmd_cast_o.header.addr           = {cache_req_r.addr[paddr_width_p-1:block_offset_width_lp], {assoc_p > 1{bank_index}}, byte_offset_width_lp'(0)};
+            mem_cmd_cast_o.header.size           = block_msg_size_lp;
+            mem_cmd_cast_payload.way_id          = lce_assoc_p'(cache_req_metadata_r.hit_or_repl_way);
+            mem_cmd_cast_payload.lce_id          = lce_id_i;
+            mem_cmd_cast_o.header.payload = mem_cmd_cast_payload;
+            mem_cmd_v_o = mem_cmd_ready_then_i & ~mem_cmd_done_r & ~cache_req_credits_full_o;
+            mem_cmd_up = mem_cmd_v_o;
+>>>>>>> f6959e79... cce burst single commit
 
             cache_req_complete_o = fill_done & mem_cmd_done_r & tag_mem_pkt_yumi_i & data_mem_pkt_yumi_i;
             state_n = cache_req_complete_o ? e_writeback_write_req : e_writeback_read_req;
@@ -750,10 +785,17 @@ module bp_uce
             mem_cmd_cast_o.header.addr     = {dirty_tag_r.tag, cache_req_r.addr[block_offset_width_lp+:index_width_lp], {assoc_p > 1{bank_index}}, byte_offset_width_lp'(0)};
             mem_cmd_cast_o.header.size     = block_msg_size_lp;
             mem_cmd_cast_payload.lce_id    = lce_id_i;
+<<<<<<< HEAD
             mem_cmd_cast_o.header.payload  = mem_cmd_cast_payload;
             mem_cmd_cast_o.data            = writeback_data;
             mem_cmd_v_o = dirty_data_v_r & dirty_tag_v_r & ~cache_req_credits_full_o;
             mem_cmd_up = mem_cmd_yumi_i;
+=======
+            mem_cmd_cast_o.header.payload = mem_cmd_cast_payload;
+            mem_cmd_cast_o.data                  = writeback_data;
+            mem_cmd_v_o = mem_cmd_ready_then_i & dirty_data_v_r & dirty_tag_v_r;
+            mem_cmd_up = mem_cmd_v_o;
+>>>>>>> f6959e79... cce burst single commit
 
             writeback_complete = mem_cmd_done & mem_cmd_up;
             state_n = writeback_complete ? e_ready : e_writeback_write_req;
@@ -785,8 +827,13 @@ module bp_uce
             mem_cmd_cast_payload.way_id          = lce_assoc_p'(cache_req_metadata_r.hit_or_repl_way);
             mem_cmd_cast_payload.lce_id          = lce_id_i;
             mem_cmd_cast_o.header.payload = mem_cmd_cast_payload;
+<<<<<<< HEAD
             mem_cmd_v_o = ~mem_cmd_done_r & ~cache_req_credits_full_o;
             mem_cmd_up = mem_cmd_yumi_i;
+=======
+            mem_cmd_v_o = mem_cmd_ready_then_i & ~mem_cmd_done_r & ~cache_req_credits_full_o;
+            mem_cmd_up = mem_cmd_v_o;
+>>>>>>> f6959e79... cce burst single commit
 
             cache_req_complete_o = fill_done & mem_cmd_done_r & tag_mem_pkt_yumi_i & data_mem_pkt_yumi_i;
             state_n = cache_req_complete_o ? e_ready : e_read_req;
