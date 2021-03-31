@@ -562,11 +562,7 @@ module wrapper
 
        ,.mem_cmd_o(mem_cmd_lo)
        ,.mem_cmd_v_o(mem_cmd_v_o)
-<<<<<<< HEAD
        ,.mem_cmd_yumi_i(mem_cmd_ready_i & mem_cmd_v_o)
-=======
-       ,.mem_cmd_ready_then_i(mem_cmd_ready_i)
->>>>>>> f6959e79... cce burst single commit
 
        ,.mem_resp_i(fifo_mem_resp_lo)
        ,.mem_resp_v_i(fifo_mem_resp_v_lo)

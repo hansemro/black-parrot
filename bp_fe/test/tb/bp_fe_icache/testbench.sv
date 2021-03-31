@@ -203,13 +203,8 @@ module testbench
     ,.reset_i(reset_i)
 
     ,.mem_cmd_i(mem_cmd_lo)
-<<<<<<< HEAD
     ,.mem_cmd_v_i(mem_cmd_ready_lo & mem_cmd_v_lo)
     ,.mem_cmd_ready_o(mem_cmd_ready_lo)
-=======
-    ,.mem_cmd_v_i(mem_cmd_v_lo)
-    ,.mem_cmd_ready_and_o(mem_cmd_ready_lo)
->>>>>>> f6959e79... cce burst single commit
 
     ,.mem_resp_o(mem_resp_lo)
     ,.mem_resp_v_o(mem_resp_v_lo)

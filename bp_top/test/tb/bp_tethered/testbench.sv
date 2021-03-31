@@ -134,7 +134,6 @@ module testbench
     (.clk_i(clk_i)
      ,.reset_i(reset_i)
 
-<<<<<<< HEAD
      ,.dma_pkt_i(dma_pkt_lo)
      ,.dma_pkt_v_i(dma_pkt_v_lo)
      ,.dma_pkt_yumi_o(dma_pkt_yumi_li)
@@ -142,11 +141,6 @@ module testbench
      ,.dma_data_o(dma_data_li)
      ,.dma_data_v_o(dma_data_v_li)
      ,.dma_data_ready_and_i(dma_data_ready_and_lo)
-=======
-     ,.mem_cmd_i(proc_mem_cmd_lo)
-     ,.mem_cmd_v_i(proc_mem_cmd_ready_li & proc_mem_cmd_v_lo)
-     ,.mem_cmd_ready_and_o(proc_mem_cmd_ready_li)
->>>>>>> f6959e79... cce burst single commit
 
      ,.dma_data_i(dma_data_lo)
      ,.dma_data_v_i(dma_data_v_lo)

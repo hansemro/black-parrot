@@ -272,11 +272,7 @@ module bp_unicore
 
     ,.mem_cmd_o(proc_cmd_lo[1])
     ,.mem_cmd_v_o(proc_cmd_v_lo[1])
-<<<<<<< HEAD
     ,.mem_cmd_yumi_i(proc_cmd_yumi_li[1])
-=======
-    ,.mem_cmd_ready_then_i(proc_cmd_ready_li[1])
->>>>>>> f6959e79... cce burst single commit
 
     ,.mem_resp_i(proc_resp_li[1])
     ,.mem_resp_v_i(proc_resp_v_li[1])
@@ -326,11 +322,7 @@ module bp_unicore
 
      ,.mem_cmd_o(proc_cmd_lo[0])
      ,.mem_cmd_v_o(proc_cmd_v_lo[0])
-<<<<<<< HEAD
      ,.mem_cmd_yumi_i(proc_cmd_yumi_li[0])
-=======
-     ,.mem_cmd_ready_then_i(proc_cmd_ready_li[0])
->>>>>>> f6959e79... cce burst single commit
 
      ,.mem_resp_i(proc_resp_li[0])
      ,.mem_resp_v_i(proc_resp_v_li[0])
