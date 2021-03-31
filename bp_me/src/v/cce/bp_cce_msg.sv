@@ -799,8 +799,8 @@ module bp_cce_msg
         // cached requests will stall on the input port
         // cached requests not allowed, go to error state and stall
         end else if (lce_req_header_v_i
-            & ((lce_req.msg_type.req == e_bedrock_req_rd)
-               | (lce_req.msg_type.req == e_bedrock_req_wr))) begin
+            & ((lce_req.msg_type.req == e_bedrock_req_rd_miss)
+               | (lce_req.msg_type.req == e_bedrock_req_wr_miss))) begin
           state_n = e_error;
 
         // uncached load/store

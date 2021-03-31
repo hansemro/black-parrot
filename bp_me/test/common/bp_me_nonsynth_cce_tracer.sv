@@ -121,7 +121,7 @@ module bp_me_nonsynth_cce_tracer
         $fdisplay(file, "[%t]: CCE[%0d] REQ LCE[%0d] addr[%H] wg[%0d] wr[%0b] ne[%0b] uc[%0b] lruWay[%0d]"
                  , $time, lce_req_payload.dst_id, lce_req_payload.src_id, lce_req.addr
                  , lce_req.addr[lg_block_size_in_bytes_lp +: lg_cce_way_groups_lp]
-                 , (lce_req.msg_type.req == e_bedrock_req_wr)
+                 , (lce_req.msg_type.req == e_bedrock_req_wr_miss)
                  , lce_req_payload.non_exclusive
                  , 1'b0
                  , lce_req_payload.lru_way_id
