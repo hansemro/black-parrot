@@ -134,6 +134,7 @@ module testbench
     (.clk_i(clk_i)
      ,.reset_i(reset_i)
 
+<<<<<<< HEAD
      ,.dma_pkt_i(dma_pkt_lo)
      ,.dma_pkt_v_i(dma_pkt_v_lo)
      ,.dma_pkt_yumi_o(dma_pkt_yumi_li)
@@ -141,6 +142,11 @@ module testbench
      ,.dma_data_o(dma_data_li)
      ,.dma_data_v_o(dma_data_v_li)
      ,.dma_data_ready_and_i(dma_data_ready_and_lo)
+=======
+     ,.mem_cmd_i(proc_mem_cmd_lo)
+     ,.mem_cmd_v_i(proc_mem_cmd_ready_li & proc_mem_cmd_v_lo)
+     ,.mem_cmd_ready_and_o(proc_mem_cmd_ready_li)
+>>>>>>> f6959e79... cce burst single commit
 
      ,.dma_data_i(dma_data_lo)
      ,.dma_data_v_i(dma_data_v_lo)
@@ -516,28 +522,44 @@ module testbench
 
               ,.cce_id_i(cfg_bus_cast_i.cce_id)
 
-              // To CCE
-              ,.lce_req_i(lce_req_i)
-              ,.lce_req_v_i(lce_req_v_i)
-              ,.lce_req_yumi_i(lce_req_yumi_o)
-              ,.lce_resp_i(lce_resp_i)
-              ,.lce_resp_v_i(lce_resp_v_i)
-              ,.lce_resp_yumi_i(lce_resp_yumi_o)
+              // LCE-CCE Interface
+              // BP Burst protocol: ready&valid
+              ,.lce_req_header_i(lce_req_header_i)
+              ,.lce_req_header_v_i(lce_req_header_v_i)
+              ,.lce_req_header_ready_and_i(lce_req_header_ready_and_o)
+              ,.lce_req_data_i(lce_req_data_i)
+              ,.lce_req_data_v_i(lce_req_data_v_i)
+              ,.lce_req_data_ready_and_i(lce_req_data_ready_and_o)
 
-              // From CCE
-              ,.lce_cmd_i(lce_cmd_o)
-              ,.lce_cmd_v_i(lce_cmd_v_o)
-              ,.lce_cmd_ready_i(lce_cmd_ready_i)
+              ,.lce_resp_header_i(lce_resp_header_i)
+              ,.lce_resp_header_v_i(lce_resp_header_v_i)
+              ,.lce_resp_header_ready_and_i(lce_resp_header_ready_and_o)
+              ,.lce_resp_data_i(lce_resp_data_i)
+              ,.lce_resp_data_v_i(lce_resp_data_v_i)
+              ,.lce_resp_data_ready_and_i(lce_resp_data_ready_and_o)
 
-              // To CCE
-              ,.mem_resp_i(mem_resp_i)
-              ,.mem_resp_v_i(mem_resp_v_i)
-              ,.mem_resp_yumi_i(mem_resp_yumi_o)
+              ,.lce_cmd_header_i(lce_cmd_header_o)
+              ,.lce_cmd_header_v_i(lce_cmd_header_v_o)
+              ,.lce_cmd_header_ready_and_i(lce_cmd_header_ready_and_i)
+              ,.lce_cmd_data_i(lce_cmd_data_o)
+              ,.lce_cmd_data_v_i(lce_cmd_data_v_o)
+              ,.lce_cmd_data_ready_and_i(lce_cmd_data_ready_and_i)
 
-              // From CCE
-              ,.mem_cmd_i(mem_cmd_o)
-              ,.mem_cmd_v_i(mem_cmd_v_o)
-              ,.mem_cmd_ready_i(mem_cmd_ready_i)
+              // CCE-MEM Interface
+              // BP Burst protocol: ready&valid
+              ,.mem_resp_header_i(mem_resp_header_i)
+              ,.mem_resp_header_v_i(mem_resp_header_v_i)
+              ,.mem_resp_header_ready_and_i(mem_resp_header_ready_and_o)
+              ,.mem_resp_data_i(mem_resp_data_i)
+              ,.mem_resp_data_v_i(mem_resp_data_v_i)
+              ,.mem_resp_data_ready_and_i(mem_resp_data_ready_and_o)
+
+              ,.mem_cmd_header_i(mem_cmd_header_o)
+              ,.mem_cmd_header_v_i(mem_cmd_header_v_o)
+              ,.mem_cmd_header_ready_and_i(mem_cmd_header_ready_and_i)
+              ,.mem_cmd_data_i(mem_cmd_data_o)
+              ,.mem_cmd_data_v_i(mem_cmd_data_v_o)
+              ,.mem_cmd_data_ready_and_i(mem_cmd_data_ready_and_i)
               );
 
           bind bp_lce
@@ -553,17 +575,18 @@ module testbench
               ,.lce_id_i(lce_id_i)
               ,.lce_req_i(lce_req_o)
               ,.lce_req_v_i(lce_req_v_o)
-              ,.lce_req_ready_i(lce_req_ready_i)
+              ,.lce_req_ready_then_i(lce_req_ready_then_i)
               ,.lce_resp_i(lce_resp_o)
               ,.lce_resp_v_i(lce_resp_v_o)
-              ,.lce_resp_ready_i(lce_resp_ready_i)
+              ,.lce_resp_ready_then_i(lce_resp_ready_then_i)
               ,.lce_cmd_i(lce_cmd_i)
               ,.lce_cmd_v_i(lce_cmd_v_i)
               ,.lce_cmd_yumi_i(lce_cmd_yumi_o)
               ,.lce_cmd_o_i(lce_cmd_o)
               ,.lce_cmd_o_v_i(lce_cmd_v_o)
-              ,.lce_cmd_o_ready_i(lce_cmd_ready_i)
+              ,.lce_cmd_o_ready_then_i(lce_cmd_ready_then_i)
               );
+
         end
     end
 
