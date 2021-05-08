@@ -29,6 +29,7 @@
   `define RV64_FMSUB_OP      7'b1000111
   `define RV64_FNMSUB_OP     7'b1001011
   `define RV64_FNMADD_OP     7'b1001111
+  `define RV64_C_OP          2'b10
 
   // Some useful RV64 instruction macros
   `define rv64_r_type(op, funct3, funct7) {``funct7``,{5{1'b?}},{5{1'b?}},``funct3``,{5{1'b?}},``op``}
@@ -36,6 +37,7 @@
   `define rv64_s_type(op, funct3)         {{7{1'b?}},{5{1'b?}},{5{1'b?}},``funct3``,{5{1'b?}},``op``}
   `define rv64_u_type(op)                 {{20{1'b?}},{5{1'b?}},``op``}
   `define rv64_fma_type(op, pr2)          {{5{1'b?}},``pr2``,{5{1'b?}},{5{1'b?}},{3{3'b?}},{5{1'b?}},``op``}
+  `define rv64_cr_type(op, funct4)        {``funct4``,{5{1'b?}},{5{1'b?}},``op``}
 
   // RV64 Immediate sign extension macros
   `define rv64_signext_i_imm(instr) {{53{``instr``[31]}},``instr``[30:20]}
@@ -219,6 +221,9 @@
   `define RV64_FCVT_DL    32'b1101001_00010_?????_???_?????_1010011
   `define RV64_FCVT_DLU   32'b1101001_00011_?????_???_?????_1010011
   `define RV64_FMV_DX     32'b1111001_00000_?????_000_?????_1010011
+
+  // C extension
+  `define RV64_C_ADD      `rv64_cr_type(`RV64_C_OP,1'b1001)
 
 `endif
 
