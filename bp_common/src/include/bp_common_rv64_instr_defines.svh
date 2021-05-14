@@ -37,7 +37,17 @@
   `define rv64_s_type(op, funct3)         {{7{1'b?}},{5{1'b?}},{5{1'b?}},``funct3``,{5{1'b?}},``op``}
   `define rv64_u_type(op)                 {{20{1'b?}},{5{1'b?}},``op``}
   `define rv64_fma_type(op, pr2)          {{5{1'b?}},``pr2``,{5{1'b?}},{5{1'b?}},{3{3'b?}},{5{1'b?}},``op``}
+
+  // 16-bit C extension instruction macros
   `define rv64_cr_type(op, funct4)        {``funct4``,{5{1'b?}},{5{1'b?}},``op``}
+  `define rv64_ci_type(op, funct3)        {``funct3``,1'b?,{5{1'b?}},{5{1'b?}},``op``}
+  `define rv64_css_type(op, funct3)       {``funct3``,{6{1'b?}},{5{1'b?}},``op``}
+  `define rv64_ciw_type(op, funct3)       {``funct3``,{8{1'b?}},{3{1'b?}},``op``}
+  `define rv64_cl_type(op, funct3)        {``funct3``,{3{1'b?}},{3{1'b?}},{2{1'b?}},{3{1'b?}},``op``}
+  `define rv64_cs_type(op, funct3)        {``funct3``,{3{1'b?}},{3{1'b?}},{2{1'b?}},{3{1'b?}},``op``}
+  `define rv64_ca_type(op, funct6)        {``funct6``,{3{1'b?}},{2{1'b?}},{3{1'b?}},``op``}
+  `define rv64_cb_type(op, funct3)        {``funct3``,{3{1'b?}},{3{1'b?}},{5{1'b?}},``op``}
+  `define rv64_cj_type(op, funct3)        {``funct3``,{11{1'b?}},``op``}
 
   // RV64 Immediate sign extension macros
   `define rv64_signext_i_imm(instr) {{53{``instr``[31]}},``instr``[30:20]}
