@@ -22,6 +22,99 @@
   localparam rv64_imm4to0_width_gp  = 5;
   localparam rv64_priv_width_gp     = 2;
 
+  // C extension
+  localparam rv64_instr_width_c         = 16;
+  localparam rv64_reg_min_addr_width_c  = 3;
+  localparam rv64_opcode_width_c        = 2;
+  localparam rv64_funct2_width_c        = 2;
+  localparam rv64_funct3_width_c        = 3;
+  localparam rv64_funct4_width_c        = 4;
+  localparam rv64_funct6_width_c        = 6;
+  localparam rv64_imm2_width_c          = 2;
+  localparam rv64_imm3_width_c          = 3;
+  localparam rv64_imm6_width_c          = 6;
+  localparam rv64_imm8_width_c          = 8;
+  localparam rv64_offset3_width_c       = 3;
+  localparam rv64_offset5_width_c       = 5;
+  localparam rv64_jump_target_width_c   = 11;
+
+  typedef struct packed
+  {
+    logic [rv64_funct4_width_c-1:0]     funct4;
+    logic [rv64_reg_addr_width_gp-1:0]  rd_rs1;
+    logic [rv64_reg_addr_width_gp-1:0]  rs2;
+    logic [rv64_opcode_width_c-1:0]     opcode;
+  }  rv64_instr_crtype_s;
+
+  typedef struct packed
+  {
+    logic [rv64_funct3_width_c-1:0]     funct3;
+    logic                               imm5;
+    logic [rv64_reg_addr_width_gp-1:0]  rd_rs1;
+    logic [rv64_imm4to0_width_gp-1:0]   imm4to0;
+    logic [rv64_opcode_width_c-1:0]     opcode;
+  }  rv64_instr_citype_s;
+
+  typedef struct packed
+  {
+    logic [rv64_funct3_width_c-1:0]     funct3;
+    logic [rv64_imm6_width_c-1:0]       imm6;
+    logic [rv64_reg_addr_width_gp-1:0]  rs2;
+    logic [rv64_opcode_width_c-1:0]     opcode;
+  }  rv64_instr_csstype_s;
+
+  typedef struct packed
+  {
+    logic [rv64_funct3_width_c-1:0]       funct3;
+    logic [rv64_reg_min_addr_width_c-1:0] imm8;
+    logic [rv64_reg_min_addr_width_c-1:0] rd_min;
+    logic [rv64_opcode_width_c-1:0]       opcode;
+  }  rv64_instr_ciwtype_s;
+
+  typedef struct packed
+  {
+    logic [rv64_funct3_width_c-1:0]       funct3;
+    logic [rv64_imm3_width_c-1:0]         imm3;
+    logic [rv64_reg_min_addr_width_c-1:0] rs1_min;
+    logic [rv64_imm2_width_c-1:0]         imm2;
+    logic [rv64_reg_min_addr_width_c-1:0] rd_min;
+    logic [rv64_opcode_width_c-1:0]       opcode;
+  }  rv64_instr_cltype_s;
+
+  typedef struct packed
+  {
+    logic [rv64_funct3_width_c-1:0]       funct3;
+    logic [rv64_imm3_width_c-1:0]         imm3;
+    logic [rv64_reg_min_addr_width_c-1:0] rs1_min;
+    logic [rv64_imm2_width_c-1:0]         imm2;
+    logic [rv64_reg_min_addr_width_c-1:0] rs2_min;
+    logic [rv64_opcode_width_c-1:0]       opcode;
+  }  rv64_instr_cstype_s;
+
+  typedef struct packed
+  {
+    logic [rv64_funct6_width_c-1:0]       funct6;
+    logic [rv64_reg_min_addr_width_c-1:0] rd_rs1_min;
+    logic [rv64_funct2_width_c-1:0]       funct2;
+    logic [rv64_reg_min_addr_width_c-1:0] rs2_min;
+    logic [rv64_opcode_width_c-1:0]       opcode;
+  }  rv64_instr_catype_s;
+
+  typedef struct packed
+  {
+    logic [rv64_funct3_width_c-1:0]       funct3;
+    logic [rv64_offset3_width_c-1:0]      offset3;
+    logic [rv64_reg_min_addr_width_c-1:0] rd_rs1
+    logic [rv64_opcode_width_c-1:0]       opcode;
+  }  rv64_instr_cbtype_s;
+
+  typedef struct packed
+  {
+    logic [rv64_funct3_width_c-1:0]       funct3;
+    logic [rv64_jump_target_width_c-1:0]  jump_target;
+    logic [rv64_opcode_width_c-1:0]       opcode;
+  }  rv64_instr_cjtype_s;
+
   typedef struct packed
   {
     logic [rv64_funct7_width_gp-1:0]   funct7;
@@ -89,6 +182,15 @@
       rv64_instr_itype_s    itype;
       rv64_instr_stype_s    stype;
       rv64_instr_utype_s    utype;
+      rv64_instr_crtype_s   crtype;
+      rv64_instr_citype_s   citype;
+      rv64_instr_csstype_s  csstype;
+      rv64_instr_ciwtype_s  ciwtype;
+      rv64_instr_cltype_s   cltype;
+      rv64_instr_csstype_s  cstype;
+      rv64_instr_catype_s   catype;
+      rv64_instr_cbtype_s   cbtype;
+      rv64_instr_cjtype_s   cjtype;
     }  t;
   }  rv64_instr_s;
 
