@@ -72,15 +72,6 @@ module bp_be_instr_decoder
       sfence_vma_o    = '0;
 
       unique casez (instr.opcode)
-        `RV64_C_OP:
-          begin
-            decode_cast_o.pipe_int_v = 1'b1;
-            decode_cast_o.irf_w_v    = ~decode_cast_o.late_iwb_v & (instr.rd_addr != '0);
-            decode_cast_o.opw_v      = '0;
-            unique casez (instr)
-              `RV64_C_ADD : decode_cast_o.fu_op = e_int_op_add;
-            endcase
-          end
         `RV64_OP_OP, `RV64_OP_32_OP:
           begin
             if (instr inside {`RV64_MUL, `RV64_MULW})

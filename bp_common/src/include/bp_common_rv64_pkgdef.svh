@@ -104,7 +104,7 @@
   {
     logic [rv64_funct3_width_c-1:0]       funct3;
     logic [rv64_offset3_width_c-1:0]      offset3;
-    logic [rv64_reg_min_addr_width_c-1:0] rd_rs1
+    logic [rv64_reg_min_addr_width_c-1:0] rd_rs1;
     logic [rv64_opcode_width_c-1:0]       opcode;
   }  rv64_instr_cbtype_s;
 
@@ -174,6 +174,18 @@
 
   typedef struct packed
   {
+    logic                              imm12;
+    logic [10:5]                       imm10to5;
+    logic [rv64_reg_addr_width_gp-1:0] rs2;
+    logic [rv64_reg_addr_width_gp-1:0] rs1;
+    logic [rv64_funct3_width_gp-1:0]   funct3;
+    logic [4:1]                        imm4to1;
+    logic                              imm11;
+    logic [rv64_opcode_width_gp-1:0]   opcode;
+  }  rv64_instr_btype_s;
+
+  typedef struct packed
+  {
     union packed
     {
       rv64_instr_rtype_s    rtype;
@@ -182,15 +194,16 @@
       rv64_instr_itype_s    itype;
       rv64_instr_stype_s    stype;
       rv64_instr_utype_s    utype;
-      rv64_instr_crtype_s   crtype;
-      rv64_instr_citype_s   citype;
-      rv64_instr_csstype_s  csstype;
-      rv64_instr_ciwtype_s  ciwtype;
-      rv64_instr_cltype_s   cltype;
-      rv64_instr_csstype_s  cstype;
-      rv64_instr_catype_s   catype;
-      rv64_instr_cbtype_s   cbtype;
-      rv64_instr_cjtype_s   cjtype;
+      rv64_instr_btype_s    btype;
+      // rv64_instr_crtype_s   crtype;
+      // rv64_instr_citype_s   citype;
+      // rv64_instr_csstype_s  csstype;
+      // rv64_instr_ciwtype_s  ciwtype;
+      // rv64_instr_cltype_s   cltype;
+      // rv64_instr_csstype_s  cstype;
+      // rv64_instr_catype_s   catype;
+      // rv64_instr_cbtype_s   cbtype;
+      // rv64_instr_cjtype_s   cjtype;
     }  t;
   }  rv64_instr_s;
 
