@@ -1,45 +1,41 @@
 TOP ?= $(shell git rev-parse --show-toplevel)
 
-.PHONY: bleach_all libs tools sdk hdk prep prep_bsg
+.PHONY: help libs tools_lite tools tools_bsg tidy bleach_all
 
 include $(TOP)/Makefile.common
+include $(TOP)/Makefile.tools
 
-libs:
-	cd $(TOP); git submodule update --init --recursive --checkout $(SHALLOW_SUB) $(BASEJUMP_STL_DIR)
-	cd $(TOP); git submodule update --init --recursive --checkout $(SHALLOW_SUB) $(HARDFLOAT_DIR)
+help:
+	@echo "usage: make [libs, tools, tools_lite, tools_bsg, tidy, bleach_all]"
 
-tools: libs
-	$(MAKE) -C $(BP_TOOLS_DIR) tools
+libs: $(BP_TOOLS_LIB_DIR)/libdramsim3.so
+$(BP_TOOLS_LIB_DIR)/libdramsim3.so:
+	cd $(TOP); git submodule update --init --recursive --checkout $(BASEJUMP_STL_DIR)
+	cd $(TOP); git submodule update --init --recursive --checkout $(HARDFLOAT_DIR)
+	$(MAKE) -C $(BASEJUMP_STL_DIR)/bsg_test -f libdramsim3.mk
+	mkdir -p $(BP_TOOLS_LIB_DIR)
+	cp $(BASEJUMP_STL_DIR)/bsg_test/libdramsim3.so $(BP_TOOLS_LIB_DIR)/libdramsim3.so
 
-sdk: tools
-	cd $(TOP); git submodule update --init --checkout $(SHALLOW_SUB) $(BP_SDK_DIR)
-	$(MAKE) -C $(BP_SDK_DIR) sdk
+TOOL_TARGET_DIRS := $(BP_TOOLS_BIN_DIR) $(BP_TOOLS_LIB_DIR) $(BP_TOOLS_INCLUDE_DIR) $(BP_TOOLS_TOUCH_DIR)
+$(TOOL_TARGET_DIRS):
+	mkdir -p $@
 
-hdk: sdk
-	cd $(TOP); git submodule update --init --checkout $(SHALLOW_SUB) $(BP_HDK_DIR)
-	$(MAKE) -C $(BP_HDK_DIR) hdk
+tools_lite: libs | $(TOOL_TARGET_DIRS)
+	$(MAKE) verilator
+	$(MAKE) dromajo
 
-prep: hdk
+## This target makes the tools needed for the BlackParrot RTL
+tools: tools_lite
+	$(MAKE) bsg_sv2v
 
-prep_bsg: prep
-	$(MAKE) bsg_cadenv
-	$(MAKE) -C $(BP_TOOLS_DIR) bsg_cadenv
-	$(MAKE) -C $(BP_SDK_DIR) bsg_cadenv
-	$(MAKE) -C $(BP_HDK_DIR) bsg_cadenv
+tools_bsg: tools bsg_cadenv
 
-prep_lite: tools
-	cd $(TOP); git submodule update --init --checkout $(SHALLOW_SUB) $(BP_SDK_DIR)
-	cd $(TOP); git submodule update --init --checkout $(SHALLOW_SUB) $(BP_HDK_DIR)
-	$(MAKE) -C tools tools_lite
-	$(MAKE) -C sdk sdk_lite
-
-bsg_cadenv:
-	-cd $(TOP); git clone git@github.com:bespoke-silicon-group/bsg_cadenv.git external/bsg_cadenv
+bsg_cadenv: $(BP_EXTERNAL_DIR)/bsg_cadenv
+$(BP_EXTERNAL_DIR)/bsg_cadenv:
+	-git clone git@github.com:bespoke-silicon-group/bsg_cadenv.git $(BP_EXTERNAL_DIR)/bsg_cadenv
 
 tidy:
-	$(MAKE) -C $(BP_TOOLS_DIR) tidy
-	$(MAKE) -C $(BP_SDK_DIR) tidy
-	$(MAKE) -C $(BP_HDK_DIR) tidy
+	echo "BlackParrot RTL is tidy enough"
 
 ## This target just wipes the whole repo clean.
 #  Use with caution.
