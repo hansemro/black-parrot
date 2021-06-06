@@ -82,7 +82,7 @@ $(SIM_DIR)/run_samplesc: $(SAMPLE_COLLATERAL)
 	$(RISCV_OBJCOPY) -O verilog $(@D)/prog.riscv $(@D)/prog.mem
 	$(SED) -i "s/@8/@0/g" $(@D)/prog.mem
 	$(RISCV_OBJCOPY) -I binary -O elf64-littleriscv -B riscv $(@D)/prog.bootram $(@D)/bootrom.riscv
-	$(RISCV_OBJDUMP) -D $(@D)/bootrom.riscv > $(@D)/bootrom.dump
+	$(RISCV_OBJDUMP) -D -M numeric,no-aliases $(@D)/bootrom.riscv > $(@D)/bootrom.dump
 	$(RISCV_OBJCOPY) -O verilog --verilog-data-width=8 $(@D)/bootrom.riscv $(@D)/bootrom.mem
 	$(RISCV_OBJCOPY) -O binary $(@D)/bootrom.riscv $(@D)/bootrom.bin
 	cd $(@D); \
